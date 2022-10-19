@@ -1,13 +1,17 @@
 class Floor {
-    constructor(floorNum) {
-        this.floorNum = floorNum;
+    constructor(floor, upButtonPressed, downButtonPressed) {
+        this.floor = floor;
+        this.upButtonPressed = upButtonPressed;
+        this.downButtonPressed = downButtonPressed;
     }
 
-    upButtonPressed() {
-        // Triggered when someone has pressed the up button at a floor
+    pressUpButton() {
+
     }
 
-    downButtonPressed() {
-        // Triggered when someone has pressed the down button at a floor
+    pressDownButton() {
+        
     }
 }
+
+module.exports = Floor;

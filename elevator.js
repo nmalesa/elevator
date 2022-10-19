@@ -1,41 +1,52 @@
 // Chose to use a class so that we can instantiate multiple instances of elevators doing different activities
 class Elevator {
-  // Elevator data (e.g., for mulitple elevators) 
-  constructor(destinationQueue) {
-    // Current destination queue (i.e., the floor numbers the elevator is scheduled to go to)
-    this.destinationQueue = destinationQueue;
+  // Elevator data (e.g., for mulitple elevators)
+
+  constructor(currentFloor) {
+    this.currentFloor = currentFloor;
+    this.destinations = [];
+    this.time = 0;
   }
 
-  goToFloor() {
-    // Queue the elevator to go to specified floor number.  
-    // If you specifify true as second argument, the elevator will go to that floor directly, and then go to any other queued floors.
+  // Queues elevator to go to given floor number.
+  goToFloor(floor) {
+    this.destinations.push(floor);
   }
 
-  currentFloor() {
-    // Gets the floor number that the elevator is currently on.
+  printFloorTest(n) {
+    for (let i = 1; i <= n; i++) {
+      setTimeout(() => {
+        console.log(i)
+      }, i * 1000);
+    }
   }
 
-  goingUpIndicator() {
-    // Gets or sets the going up indicator, which will affect passenger behavior when stopping at floors
+  // Gets the direction the elevator is currently going to move toward (e.g., up or down)
+  getDirection() {
+    if (
+      this.destinations.length === 0 ||
+      this.destinations[0] === this.currentFloor
+    )
+      return "idle";
+    else return this.destinations[0] > this.currentFloor ? "up" : "down";
   }
 
-  goingDownIndicator() {
-    // Gets or sets the going down indicator, which will affect passenger behavior when stopping at floors
+  getDirectionToFloor(floor) {
+    if (floor === this.currentFloor) return "idle"
+    else return (floor > this.currentFloor) ? "up" : "down"
   }
 
-  destinationDirection() {
-    // Gets the direction the elevator is currently going to move toward (e.g., up or down)
+  // Calculates the time required to go to a specific floor
+  getTimeToFloor(floor) {
+    this.time = Math.abs(this.currentFloor - floor);
+    return this.time;
   }
 
-  checkDestinationQueue() {
-    // Checks the destination queue for any new destinations to go to
-  }
-  
-  getPressedFloors() {
-    // Gets the currently pressed floor numbers as an array
+  travel() {
+    setInterval()
   }
 
-  floorButtonPressed(floorNum) {
-    // Triggered when a passenger has pressed a button inside the elevator
-  }
+
 }
+
+module.exports = Elevator;
