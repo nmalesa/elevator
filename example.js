@@ -1,4 +1,5 @@
 const Elevator = require('./elevator')
+const Request = require('./request')
 
 let elevator = new Elevator;
 
@@ -12,14 +13,5 @@ let elevator = new Elevator;
     // If elevator direction is equal to down and elevator floor is greater than request floor
 // If queue is empty, reset time to 0;
 
-elevator.currentFloor = 1;
 
-elevator.getDestinationFromOutsideElevator(3, "down");
-elevator.getDestinationFromOutsideElevator(10, "down");
-
-elevator.travel();
-
-elevator.getDestinationFromInsideElevator(1);
-
-console.log("Current floor: ", elevator.currentFloor);
 
