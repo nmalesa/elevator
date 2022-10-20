@@ -23,7 +23,7 @@ test('handles multiple passengers going up', () => {
     expect(elevator.currentFloor).toBe(10);
 })
 
-test('handles passenger going down from inside elevator', () => {
+test('handles additional passenger inside elevator going down', () => {
     elevator.getPassengersGoingDown(new Passenger(3, 2, "DOWN", "OUT"));
     elevator.getPassengersGoingDown(new Passenger(10, 1, "DOWN", "OUT"));
     elevator.getPassengersGoingDown(new Passenger(10, 7, "DOWN", "IN"));
@@ -32,7 +32,7 @@ test('handles passenger going down from inside elevator', () => {
     expect(elevator.currentFloor).toBe(1);
 })
 
-test('handles passenger going up from inside elevator', () => {
+test('handles additional passenger inside elevator going up', () => {
     elevator.getPassengersGoingUp(new Passenger(4, 6, "UP", "OUT"));
     elevator.getPassengersGoingUp(new Passenger(8, 10, "UP", "OUT"));
     elevator.getPassengersGoingUp(new Passenger(8, 9, "UP", "IN"));
