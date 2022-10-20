@@ -1,6 +1,6 @@
 const Request = require("./request");
 
-class Elevator {
+class MaxLoad {
   upRequests = [];
   downRequests = [];
   testCurrentFloors = [];
@@ -10,7 +10,6 @@ class Elevator {
     this.currentFloor = currentFloor;
   }
 
-  // TRY REFACTORING IN AND OUT BUTTONS / DESIRED DESTINATION
   sendUpRequest(upRequest) {
     if (upRequest.location === "OUT") {
       this.upRequests.push(
@@ -81,4 +80,4 @@ class Elevator {
   }
 }
 
-module.exports = Elevator;
+module.exports = MaxLoad;

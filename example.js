@@ -1,43 +1,36 @@
 const Elevator = require('./elevator')
 const Request = require('./request')
+const ExpressElevator = require('./express-elevator')
+const MaxLoad = require('./max-load')
+const TwoElevators = require('./two-elevators')
 
-let elevator = new Elevator(1);
+// Need to find the distance between the current floor of each elevator and the request
+// Math.abs(currentFloor - desiredFloor);
+// Also need to check direction 
 
-let requestFrom3 = new Request(3, 2, "DOWN", "OUT")
-let requestFrom10 = new Request(10, 1, "DOWN", "OUT");
-let requestFromInside10 = new Request(10, 7, "DOWN", "IN");
+// forEach?
 
-let requestFrom4 = new Request(4, 6, "UP", "OUT");
-let requestFrom8 = new Request(8, 10, "UP", "OUT");
-let requestFromInside8 = new Request(8, 9, "UP", "IN");
+const elevator1 = new TwoElevators(1, 4);
+const elevator2 = new TwoElevators(2, 7);
 
-// elevator.sendDownRequest(requestFrom3);
-// elevator.sendDownRequest(requestFrom10);
-// // elevator.sendDownRequest(requestFromInside10);
-// elevator.run();
+const requestFrom3 = new Request(3, 2, "DOWN", "OUT");
+const requestFrom10 = new Request(10, 1, "DOWN", "OUT");
+
+const elevators = [elevator1, elevator2];
+
+const getClosestElevator = (elevators, testRequest) => {
+    elevators.map((elevator) => {
+        elevator.distance = Math.abs(elevator.currentFloor - testRequest.currentFloor)
+    })
+
+    let closestElevator = elevators.reduce((prev, current) => {
+        return prev.distance < current.distance ? prev : current;
+    })
+
+    return closestElevator;
+}
+
+console.log(getClosestElevator(elevators, requestFrom3))
 
 
 
-// elevator.sendUpRequest(requestFrom4);
-// elevator.sendUpRequest(requestFrom8);
-// elevator.sendUpRequest(requestFromInside8);
-// elevator.run();
-
-elevator.sendUpRequest(new Request(3, 7, "UP", "OUT"));
-elevator.sendDownRequest(new Request(6, 1, "DOWN", "OUT"));
-// elevator.sendDownRequest(new Request(6, 3, "DOWN", "IN"));
-elevator.run();
-
-// ORDERING FOR DOWN REQUESTS
-// let test = [1, 3, 5]
-// test.push(4);
-// console.log("Test: ", test)
-// test.sort((a, b) => (b - a));
-// console.log("Sorted Test: ", test);
-
-// ORDERING FOR UP REQUESTS
-// let test = [1, 3, 5]
-// test.push(4);
-// console.log("Test: ", test)
-// test.sort((a, b) => (a - b));
-// console.log("Sorted Test: ", test);

@@ -1,16 +1,16 @@
 const Request = require("./request");
 
-class Elevator {
+class TwoElevators {
   upRequests = [];
   downRequests = [];
   testCurrentFloors = [];
-  direction = "IDLE";
 
-  constructor(currentFloor) {
+  constructor(id, currentFloor) {
+    this.id = id;
     this.currentFloor = currentFloor;
+    this.direction = "IDLE";
   }
 
-  // TRY REFACTORING IN AND OUT BUTTONS / DESIRED DESTINATION
   sendUpRequest(upRequest) {
     if (upRequest.location === "OUT") {
       this.upRequests.push(
@@ -81,4 +81,4 @@ class Elevator {
   }
 }
 
-module.exports = Elevator;
+module.exports = TwoElevators;
