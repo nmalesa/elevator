@@ -13,6 +13,7 @@ const location = {
 };
 
 let elevator = new Elevator(1);
+console.log("Current Floor: ", elevator.currentFloor);
 
 let requestFromSix = new Request(6, 10, direction.up, location.outside);
 
