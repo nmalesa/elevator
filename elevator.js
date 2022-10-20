@@ -10,10 +10,14 @@ class Elevator {
     idle: "IDLE",
   };
 
+  currentDirection = this.direction.idle;
+
   location = {
     inside: "INSIDE_ELEVATOR",
     outside: "OUTSIDE_ELEVATOR",
   };
+
+  currentDirection = "";
 
   constructor(currentFloor) {
     this.currentFloor = currentFloor;
@@ -54,7 +58,51 @@ class Elevator {
   }
 
   run() {
+    if (!this.upRequests.length || !this.downRequests.length) {
+      this.processRequests();
+    }
 
+    console.log("Finished all requests.");
+    this.currentDirection = this.direction.idle;
+  }
+
+  processRequests() {
+    console.log("Current direction: ", this.currentDirection);
+    if (this.currentDirection === this.direction.up || this.currentDirection === this.direction.idle) {
+      this.processUpRequest();
+      this.processDownRequest();
+    } else {
+      this.processDownRequest();
+      this.processUpRequest();
+    }
+  }
+
+  processUpRequest(){
+    if (this.upRequests.length) {
+      let upRequest = this.upRequests.shift();
+      this.currentFloor = upRequest.desiredFloor;
+      console.log(`Arrived at ${this.currentFloor}!`)
+    }
+
+    if (this.downRequests.length) {
+      this.currentDirection = this.direction.down;
+    } else {
+      this.currentDirection = this.direction.idle;
+    }
+  }
+
+  processDownRequest() {
+    if (this.downRequests.length) {
+      let downRequest = this.downRequests.shift();
+      this.currentFloor = downRequest.desiredFloor;
+      console.log(`Arrived at ${this.currentFloor}!`)
+    }
+
+    if (this.upRequests.length) {
+      this.currentDirection = this.direction.up;
+    } else {
+      this.currentDirection = this.direction.idle;
+    }
   }
 }
 

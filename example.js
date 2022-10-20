@@ -21,5 +21,7 @@ let requestFromThree = new Request(3, 2, direction.down, location.outside);
 
 // elevator.sendUpRequest(requestFromSix);
 
-elevator.sendDownRequest(requestFromThree);
+elevator.sendDownRequest(requestFromSix);
+
+elevator.run();
 
