@@ -6,6 +6,8 @@ class Elevator {
 
   direction = "IDLE";
 
+  testCurrentFloors = [];
+
   constructor(currentFloor) {
     this.currentFloor = currentFloor;
   }
@@ -13,31 +15,21 @@ class Elevator {
   sendUpRequest(upRequest) {
     if (upRequest.location === "OUT") {
       this.upRequests.push(
-        new Request(
-          this.currentFloor,
-          upRequest.currentFloor,
-          "UP",
-          "OUT"
-        )
+        new Request(this.currentFloor, upRequest.currentFloor, "UP", "OUT")
       );
     }
     this.upRequests.push(upRequest);
-    this.upRequests.sort((a, b) => (a.desiredFloor - b.desiredFloor))
+    this.upRequests.sort((a, b) => a.desiredFloor - b.desiredFloor);
   }
 
   sendDownRequest(downRequest) {
     if (downRequest.location === "OUT") {
       this.downRequests.push(
-        new Request(
-          this.currentFloor,
-          downRequest.currentFloor,
-          "DOWN",
-          "OUT"
-        )
+        new Request(this.currentFloor, downRequest.currentFloor, "DOWN", "OUT")
       );
     }
     this.downRequests.push(downRequest);
-    this.downRequests.sort((a, b) => (b.desiredFloor - a.desiredFloor));
+    this.downRequests.sort((a, b) => b.desiredFloor - a.desiredFloor);
   }
 
   run() {
@@ -46,6 +38,7 @@ class Elevator {
     }
 
     console.log("Finished all requests.");
+    console.log("Current Floors Array: ", this.testCurrentFloors);
     this.direction = "IDLE";
   }
 
@@ -69,6 +62,7 @@ class Elevator {
     while (this.upRequests.length) {
       let upRequest = this.upRequests.shift();
       this.currentFloor = upRequest.desiredFloor;
+      this.testCurrentFloors.push(this.currentFloor);
       console.log(`Arrived at ${this.currentFloor}!`);
     }
 
@@ -83,6 +77,7 @@ class Elevator {
     while (this.downRequests.length) {
       let downRequest = this.downRequests.shift();
       this.currentFloor = downRequest.desiredFloor;
+      this.testCurrentFloors.push(this.currentFloor);
       console.log(`Arrived at ${this.currentFloor}!`);
     }
 
