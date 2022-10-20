@@ -103,8 +103,8 @@ const getClosestElevator = (elevators, testRequest) => {
     return closestElevator;
 }
 
-console.log(getClosestElevator(elevators, requestFrom3))
-console.log(getClosestElevator(elevators, requestFrom10))
+// console.log(getClosestElevator(elevators, requestFrom3))
+// console.log(getClosestElevator(elevators, requestFrom10))
 
 // STILL NEED TO CHECK DIRECTION
 
