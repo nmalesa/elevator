@@ -20,8 +20,10 @@ class Elevator {
           "OUTSIDE_ELEVATOR"
         )
       );
+      this.upRequests.sort((a, b) => (a - b))
     }
     this.upRequests.push(upRequest);
+    this.upRequests.sort((a, b) => (a - b))
     console.log("Up requests: ", this.upRequests);
   }
 
@@ -35,9 +37,13 @@ class Elevator {
           "OUTSIDE_ELEVATOR"
         )
       );
+      // console.log("Unsorted: ", this.downRequests);
+      this.downRequests.sort((a, b) => (b - a));
+      // console.log("Sorted: ", this.downRequests)
     }
     this.downRequests.push(downRequest);
-    console.log("Down requests: ", this.downRequests);
+    this.downRequests.sort((a, b) => (b - a));
+    // console.log("I should not be called.");
   }
 
   run() {
@@ -56,7 +62,6 @@ class Elevator {
   }
 
   processRequests() {
-    console.log("Current direction: ", this.direction);
     if (this.direction === "UP" || this.direction === "IDLE") {
       this.processUpRequest();
       this.processDownRequest();
@@ -66,8 +71,6 @@ class Elevator {
     }
   }
 
-  // NEED TO ITERATE THROUGH REQUESTS
-  // GOOD START BUT NEED TO GO THROUGH REQUESTS
   processUpRequest() {
     while (this.upRequests.length) {
       let upRequest = this.upRequests.shift();
