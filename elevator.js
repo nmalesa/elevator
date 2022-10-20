@@ -1,8 +1,8 @@
-const Request = require("./request");
+const Passenger = require("./passenger");
 
 class Elevator {
-  upRequests = [];
-  downRequests = [];
+  passengersGoingUp = [];
+  passengersGoingDown = [];
   testCurrentFloors = [];
   direction = "IDLE";
 
@@ -10,70 +10,69 @@ class Elevator {
     this.currentFloor = currentFloor;
   }
 
-  // TRY REFACTORING IN AND OUT BUTTONS / DESIRED DESTINATION
-  sendUpRequest(upRequest) {
-    if (upRequest.location === "OUT") {
-      this.upRequests.push(
-        new Request(this.currentFloor, upRequest.currentFloor, "UP", "OUT")
+  getPassengersGoingUp(passenger) {
+    if (passenger.location === "OUT") {
+      this.passengersGoingUp.push(
+        new Passenger(this.currentFloor, passenger.currentFloor, "UP", "OUT")
       );
     }
-    this.upRequests.push(upRequest);
-    this.upRequests.sort((a, b) => a.desiredFloor - b.desiredFloor);
+    this.passengersGoingUp.push(passenger);
+    this.passengersGoingUp.sort((a, b) => a.desiredFloor - b.desiredFloor);
   }
 
-  sendDownRequest(downRequest) {
-    if (downRequest.location === "OUT") {
-      this.downRequests.push(
-        new Request(this.currentFloor, downRequest.currentFloor, "DOWN", "OUT")
+  getPassengersGoingDown(passenger) {
+    if (passenger.location === "OUT") {
+      this.passengersGoingDown.push(
+        new Passenger(this.currentFloor, passenger.currentFloor, "DOWN", "OUT")
       );
     }
-    this.downRequests.push(downRequest);
-    this.downRequests.sort((a, b) => b.desiredFloor - a.desiredFloor);
+    this.passengersGoingDown.push(passenger);
+    this.passengersGoingDown.sort((a, b) => b.desiredFloor - a.desiredFloor);
   }
 
-  run() {
-    if (this.upRequests.length || this.downRequests.length) {
-      this.processRequests();
+  travel() {
+    if (this.passengersGoingUp.length || this.passengersGoingDown.length) {
+      this.transportPassengers();
     }
 
-    console.log("Finished all requests.");
+    console.log("Transported all passengers!");
     this.direction = "IDLE";
   }
 
-  processRequests() {
+  transportPassengers() {
     if (this.direction === "UP" || this.direction === "IDLE") {
-      this.processUpRequest();
-      this.processDownRequest();
+      this.transportPassengersGoingUp();
+      this.transportPassengersGoingDown();
     } else {
-      this.processDownRequest();
-      this.processUpRequest();
+      this.transportPassengersGoingDown();
+      this.transportPassengersGoingUp();
     }
   }
 
-  processUpRequest() {
-    while (this.upRequests.length) {
-      let upRequest = this.upRequests.shift();
-      this.currentFloor = upRequest.desiredFloor;
+  transportPassengersGoingUp() {
+    while (this.passengersGoingUp.length) {
+      let exitingPassenger = this.passengersGoingUp.shift();
+      this.currentFloor = exitingPassenger.desiredFloor;
       this.testCurrentFloors.push(this.currentFloor);
-      console.log(`Arrived at ${this.currentFloor}!`);
+      console.log(`Arrived at Floor ${this.currentFloor}!`);
     }
 
-    if (this.downRequests.length) {
+    if (this.passengersGoingDown.length) {
       this.direction = "DOWN";
     } else {
       this.direciton = "IDLE";
     }
   }
 
-  processDownRequest() {
-    while (this.downRequests.length) {
-      let downRequest = this.downRequests.shift();
-      this.currentFloor = downRequest.desiredFloor;
+  transportPassengersGoingDown() {
+    while (this.passengersGoingDown.length) {
+      let exitingPassenger = this.passengersGoingDown.shift();
+      this.currentFloor = exitingPassenger.desiredFloor;
       this.testCurrentFloors.push(this.currentFloor);
-      console.log(`Arrived at ${this.currentFloor}!`);
+      console.log(`Arrived at Floor ${this.currentFloor}!`);
     }
 
-    if (this.upRequests.length) {
+    if (this.passengersGoingUp.length) {
       this.direction = "UP";
     } else {
       this.direction = "IDLE";

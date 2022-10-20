@@ -1,5 +1,5 @@
 const Elevator = require('./elevator')
-const Request = require('./request')
+const Passenger = require('./passenger')
 
 let elevator = new Elevator;
 
@@ -7,45 +7,45 @@ beforeEach(() => {
     elevator.testCurrentFloors = [];
 })
 
-test('handles multiple down requests', () => {
-    elevator.sendDownRequest(new Request(3, 2, "DOWN", "OUT"));
-    elevator.sendDownRequest(new Request(10, 1, "DOWN", "OUT"));
-    elevator.run();
+test('handles passengers going down', () => {
+    elevator.getPassengersGoingDown(new Passenger(3, 2, "DOWN", "OUT"));
+    elevator.getPassengersGoingDown(new Passenger(10, 1, "DOWN", "OUT"));
+    elevator.travel();
     expect(elevator.testCurrentFloors).toEqual([ 10, 3, 2, 1 ]);
     expect(elevator.currentFloor).toBe(1);
 })
 
-test('handles multiple up requests', () => {
-    elevator.sendUpRequest(new Request(4, 6, "UP", "OUT"));
-    elevator.sendUpRequest(new Request(8, 10, "UP", "OUT"));
-    elevator.run();
+test('handles multiple passengers going up', () => {
+    elevator.getPassengersGoingUp(new Passenger(4, 6, "UP", "OUT"));
+    elevator.getPassengersGoingUp(new Passenger(8, 10, "UP", "OUT"));
+    elevator.travel();
     expect(elevator.testCurrentFloors).toEqual([4, 6, 8, 10]);
     expect(elevator.currentFloor).toBe(10);
 })
 
-test('handles down request from inside elevator', () => {
-    elevator.sendDownRequest(new Request(3, 2, "DOWN", "OUT"));
-    elevator.sendDownRequest(new Request(10, 1, "DOWN", "OUT"));
-    elevator.sendDownRequest(new Request(10, 7, "DOWN", "IN"));
-    elevator.run();
+test('handles passenger going down from inside elevator', () => {
+    elevator.getPassengersGoingDown(new Passenger(3, 2, "DOWN", "OUT"));
+    elevator.getPassengersGoingDown(new Passenger(10, 1, "DOWN", "OUT"));
+    elevator.getPassengersGoingDown(new Passenger(10, 7, "DOWN", "IN"));
+    elevator.travel();
     expect(elevator.testCurrentFloors).toEqual([ 10, 7, 3, 2, 1 ]);
     expect(elevator.currentFloor).toBe(1);
 })
 
-test('handles up request from inside elevator', () => {
-    elevator.sendUpRequest(new Request(4, 6, "UP", "OUT"));
-    elevator.sendUpRequest(new Request(8, 10, "UP", "OUT"));
-    elevator.sendUpRequest(new Request(8, 9, "UP", "IN"));
-    elevator.run();
+test('handles passenger going up from inside elevator', () => {
+    elevator.getPassengersGoingUp(new Passenger(4, 6, "UP", "OUT"));
+    elevator.getPassengersGoingUp(new Passenger(8, 10, "UP", "OUT"));
+    elevator.getPassengersGoingUp(new Passenger(8, 9, "UP", "IN"));
+    elevator.travel();
     expect(elevator.testCurrentFloors).toEqual([4, 6, 8, 9, 10]);
     expect(elevator.currentFloor).toBe(10);
 })
 
-test('handles requests in multiple directions', () => {
-    elevator.sendUpRequest(new Request(3, 7, "UP", "OUT"));
-    elevator.sendDownRequest(new Request(6, 1, "DOWN", "OUT"));
-    elevator.sendDownRequest(new Request(6, 3, "DOWN", "IN"));
-    elevator.run();
+test('handles passengers going in multiple directions', () => {
+    elevator.getPassengersGoingUp(new Passenger(3, 7, "UP", "OUT"));
+    elevator.getPassengersGoingDown(new Passenger(6, 1, "DOWN", "OUT"));
+    elevator.getPassengersGoingDown(new Passenger(6, 3, "DOWN", "IN"));
+    elevator.travel();
     expect(elevator.testCurrentFloors).toEqual([3, 7, 6, 3, 1]);
     expect(elevator.currentFloor).toBe(1);
 })

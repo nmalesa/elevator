@@ -1,14 +1,8 @@
 const Elevator = require('./elevator')
-const Request = require('./request')
+const Request = require('./passenger')
 const ExpressElevator = require('./express-elevator')
 const MaxLoad = require('./max-load')
 const TwoElevators = require('./two-elevators')
-
-// Need to find the distance between the current floor of each elevator and the request
-// Math.abs(currentFloor - desiredFloor);
-// Also need to check direction 
-
-// forEach?
 
 const elevator1 = new TwoElevators(1, 4);
 const elevator2 = new TwoElevators(2, 7);
@@ -31,6 +25,9 @@ const getClosestElevator = (elevators, testRequest) => {
 }
 
 console.log(getClosestElevator(elevators, requestFrom3))
+console.log(getClosestElevator(elevators, requestFrom10))
+
+// STILL NEED TO CHECK DIRECTION
 
 
 

@@ -1,4 +1,4 @@
-const Request = require("./request");
+const Request = require("./passenger");
 
 class MaxLoad {
   upRequests = [];

@@ -1,4 +1,4 @@
-class Request {
+class Passenger {
     constructor(currentFloor, desiredFloor, direction, location) {
         this.currentFloor = currentFloor;
         this.desiredFloor = desiredFloor;
@@ -7,4 +7,4 @@ class Request {
     }
 }
 
-module.exports = Request;
+module.exports = Passenger;
