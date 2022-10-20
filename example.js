@@ -12,42 +12,14 @@ let elevator = new Elevator;
     // If elevator direction is equal to down and elevator floor is greater than request floor
 // If queue is empty, reset time to 0;
 
+elevator.currentFloor = 1;
 
-// CURRENT LOGIC WORKS FOR GIVEN SCENARIO
-
-// NEW SCENARIO TO TEST
-// Elevator at 1
-// Request at 6 to go up to 10
-// Request at 8 to go up to 12
-
-// NEW SCENARIO TO TEST - MULTIPLE PASSENGERS ENTERING MULTIPLE DESTINATIONS
-
-// NEED TO TEST STARTING AT TOP FLOOR
-
-// Elevator is at floor 1
-elevator.currentFloor = 10;
-
-elevator.getDestination(7, "down");
-elevator.getDestination(3, "down");
-elevator.travel();
-elevator.handlePassengers();
-
-
-console.log("Current floor: ", elevator.currentFloor);
-
-elevator.getDestination(1);
+elevator.getDestinationFromOutsideElevator(3, "down");
+elevator.getDestinationFromOutsideElevator(10, "down");
 
 elevator.travel();
-elevator.handlePassengers();
+
+elevator.getDestinationFromInsideElevator(1);
 
 console.log("Current floor: ", elevator.currentFloor);
-
-elevator.getDestination(1);
-
-elevator.travel();
-elevator.handlePassengers();
-
-console.log("Current floor: ", elevator.currentFloor);
-
-
 

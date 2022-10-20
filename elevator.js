@@ -6,37 +6,66 @@ class Elevator {
     this.currentFloor = currentFloor;
   }
 
-  getDestination(floor, button) {
-    this.getDirection(floor);
+  // How to manipulate the queue
+  // All up requests finish before starting down requests
+  // Try having an up queue and down queue
 
-    // HANDLES SCENARIO WITH MULTIPLE FLOORS IN SAME DIRECTION
-    // if (this.destinations.length) {
-    //   if (button === "up" && floor > this.destinations[0]) {
-    //     this.destinations.push(floor);
-    //   } else if (button === "down" && floor < this.destinations[0]) {
-    //     this.destinations.unshift(floor);
-    //   } else {
-    //     this.destinations.push(floor)
-    //   }
-    // } else {
-    //   this.destinations.push(floor);
-    // }
-    // console.log("Queue: ", this.destinations);
 
-    // HANDLES GIVEN SCENARIO WITH UPS AND DOWNS
-    if (this.destinations.length) {
-      if (this.direction === "up" && floor > this.destinations[0]) {
-        this.destinations.unshift(floor);
-      } else if (this.direction === "down" && floor > this.destinations[0]) {
-        this.destinations.unshift(floor);
-      } else {
-        this.destinations.push(floor)
-      }
-    } else {
-      this.destinations.push(floor);
+  
+
+  getDestinationFromOutsideElevator(floor, button) {
+    this.getDirectionToFloor(floor);
+
+    if (button === "up") {
+      this.upRequests.push(floor);
+    } else if (button === "down") {
+      this.downRequests.push(floor);
     }
-    console.log("Queue: ", this.destinations);
   }
+
+  getDestinationFromInsideElevator(floor) {
+    this.getDirectionToFloor(floor);
+
+    if (this.direction === "up") {
+      this.upRequests.push(floor);
+    } else if (this.direction === "down") {
+      this.downRequests.push(floor);
+    }
+    console.log("Up Queue: ", this.upRequests)
+    console.log("Down Queue: ", this.downRequests)
+  }
+
+  // getDestination(floor, button) {
+  //   this.getDirection(floor);
+
+  //   // HANDLES SCENARIO WITH MULTIPLE FLOORS IN SAME DIRECTION
+  //   if (this.destinations.length) {
+  //     if (button === "up" && floor > this.destinations[0]) {
+  //       this.destinations.push(floor);
+  //     } else if (button === "down" && floor < this.destinations[0]) {
+  //       this.destinations.unshift(floor);
+  //     } else {
+  //       this.destinations.push(floor)
+  //     }
+  //   } else {
+  //     this.destinations.push(floor);
+  //   }
+  //   console.log("Queue: ", this.destinations);
+
+  //   // HANDLES GIVEN SCENARIO
+  //   // if (this.destinations.length) {
+  //   //   if (this.direction === "up" && floor > this.destinations[0]) {
+  //   //     this.destinations.unshift(floor);
+  //   //   } else if (this.direction === "down" && floor > this.destinations[0]) {
+  //   //     this.destinations.unshift(floor);
+  //   //   } else {
+  //   //     this.destinations.push(floor)
+  //   //   }
+  //   // } else {
+  //   //   this.destinations.push(floor);
+  //   // }
+  //   // console.log("Queue: ", this.destinations);
+  // }
 
   travel() {
     if (this.direction === "up") {
@@ -45,18 +74,18 @@ class Elevator {
       }
     } else if (this.direction === "down") {
       for (let i = this.currentFloor; i > this.destinations[0]; i--) {
-        this.currentFloor--
+        this.currentFloor--;
       }
     }
   }
 
   handlePassengers() {
     this.destinations.shift();
-    console.log("Queue: ", this.destinations)
+    console.log("Queue: ", this.destinations);
   }
 
-  getDirection(floor) {
-    return floor > this.currentFloor ? this.direction = "up" : this.direction = "down";
+  getDirectionToFloor(floor) {
+    return floor > this.currentFloor ? this.direction = "up" : this.direction = "down"
   }
 }
 
