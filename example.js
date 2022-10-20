@@ -1,27 +1,22 @@
 const Elevator = require('./elevator')
 const Request = require('./request')
 
-const direction = {
-    up: "UP",
-    down: "DOWN",
-    idle: "IDLE",
-};
+// const direction = {
+//     up: "UP",
+//     down: "DOWN",
+//     idle: "IDLE",
+// };
 
-const location = {
-    inside: "INSIDE_ELEVATOR",
-    outside: "OUTSIDE_ELEVATOR",
-};
+// const location = {
+//     inside: "INSIDE_ELEVATOR",
+//     outside: "OUTSIDE_ELEVATOR",
+// };
 
 let elevator = new Elevator(1);
-console.log("Current Floor: ", elevator.currentFloor);
 
-let requestFromSix = new Request(6, 10, direction.up, location.outside);
+let requestFrom3 = new Request(3, 2, "DOWN", "OUTSIDE_ELEVATOR")
+let requestFrom10 = new Request(10, 1, "DOWN", "OUTSIDE_ELEVATOR");
 
-let requestFromThree = new Request(3, 2, direction.down, location.outside);
-
-// elevator.sendUpRequest(requestFromSix);
-
-elevator.sendDownRequest(requestFromSix);
-
+elevator.sendDownRequest(requestFrom3);
+elevator.sendDownRequest(requestFrom10);
 elevator.run();
-

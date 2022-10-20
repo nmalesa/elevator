@@ -4,20 +4,7 @@ class Elevator {
   upRequests = [];
   downRequests = [];
 
-  direction = {
-    up: "UP",
-    down: "DOWN",
-    idle: "IDLE",
-  };
-
-  currentDirection = this.direction.idle;
-
-  location = {
-    inside: "INSIDE_ELEVATOR",
-    outside: "OUTSIDE_ELEVATOR",
-  };
-
-  currentDirection = "";
+  direction = "IDLE";
 
   constructor(currentFloor) {
     this.currentFloor = currentFloor;
@@ -29,15 +16,13 @@ class Elevator {
         new Request(
           this.currentFloor,
           upRequest.currentFloor,
-          this.direction.up,
-          this.location.outside
+          "UP",
+          "OUTSIDE_ELEVATOR"
         )
       );
-      console.log("Up requests: ", this.upRequests);
-    } else {
-      this.upRequests.push(upRequest);
-      console.log("Up requests: ", this.upRequests);
     }
+    this.upRequests.push(upRequest);
+    console.log("Up requests: ", this.upRequests);
   }
 
   sendDownRequest(downRequest) {
@@ -46,15 +31,13 @@ class Elevator {
         new Request(
           this.currentFloor,
           downRequest.currentFloor,
-          this.direction.down,
-          this.location.outside
+          "DOWN",
+          "OUTSIDE_ELEVATOR"
         )
       );
-      console.log("Down requests: ", this.downRequests);
-    } else {
-      this.downRequests.push(downRequest.currentFloor);
-      console.log("Down requests: ", this.downRequests);
     }
+    this.downRequests.push(downRequest);
+    console.log("Down requests: ", this.downRequests);
   }
 
   run() {
@@ -63,12 +46,18 @@ class Elevator {
     }
 
     console.log("Finished all requests.");
-    this.currentDirection = this.direction.idle;
+    this.direction = "IDLE";
+  }
+
+  getDirectionToFloor(floor) {
+    return floor > this.currentFloor
+      ? (this.direction = "UP")
+      : (this.direction = "DOWN");
   }
 
   processRequests() {
-    console.log("Current direction: ", this.currentDirection);
-    if (this.currentDirection === this.direction.up || this.currentDirection === this.direction.idle) {
+    console.log("Current direction: ", this.direction);
+    if (this.direction === "UP" || this.direction === "IDLE") {
       this.processUpRequest();
       this.processDownRequest();
     } else {
@@ -77,31 +66,33 @@ class Elevator {
     }
   }
 
-  processUpRequest(){
-    if (this.upRequests.length) {
+  // NEED TO ITERATE THROUGH REQUESTS
+  // GOOD START BUT NEED TO GO THROUGH REQUESTS
+  processUpRequest() {
+    while (this.upRequests.length) {
       let upRequest = this.upRequests.shift();
       this.currentFloor = upRequest.desiredFloor;
-      console.log(`Arrived at ${this.currentFloor}!`)
+      console.log(`Arrived at ${this.currentFloor}!`);
     }
 
     if (this.downRequests.length) {
-      this.currentDirection = this.direction.down;
+      this.direction = "DOWN";
     } else {
-      this.currentDirection = this.direction.idle;
+      this.direciton = "IDLE";
     }
   }
 
   processDownRequest() {
-    if (this.downRequests.length) {
+    while (this.downRequests.length) {
       let downRequest = this.downRequests.shift();
       this.currentFloor = downRequest.desiredFloor;
-      console.log(`Arrived at ${this.currentFloor}!`)
+      console.log(`Arrived at ${this.currentFloor}!`);
     }
 
     if (this.upRequests.length) {
-      this.currentDirection = this.direction.up;
+      this.direction = "UP";
     } else {
-      this.currentDirection = this.direction.idle;
+      this.direction = "IDLE";
     }
   }
 }
