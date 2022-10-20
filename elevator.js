@@ -10,6 +10,11 @@ class Elevator {
     this.currentFloor = currentFloor;
   }
 
+  /**
+   * Retrieves passengers traveling up and sorts them in ascending order by destination
+   *
+   * @param {Passenger} passenger - The passenger traveling up
+   */
   getPassengersGoingUp(passenger) {
     if (passenger.location === "OUT") {
       this.passengersGoingUp.push(
@@ -17,9 +22,14 @@ class Elevator {
       );
     }
     this.passengersGoingUp.push(passenger);
-    this.passengersGoingUp.sort((a, b) => a.desiredFloor - b.desiredFloor);
+    this.passengersGoingUp.sort((a, b) => a.destination - b.destination);
   }
 
+  /**
+   * Retrieves passengers traveling down and sorts them in descending order by destination
+   *
+   * @param {Passenger} passenger - The passenger traveling down
+   */
   getPassengersGoingDown(passenger) {
     if (passenger.location === "OUT") {
       this.passengersGoingDown.push(
@@ -27,9 +37,12 @@ class Elevator {
       );
     }
     this.passengersGoingDown.push(passenger);
-    this.passengersGoingDown.sort((a, b) => b.desiredFloor - a.desiredFloor);
+    this.passengersGoingDown.sort((a, b) => b.destination - a.destination);
   }
 
+  /**
+   * Travels to all given destinations in both queues
+   */
   travel() {
     if (this.passengersGoingUp.length || this.passengersGoingDown.length) {
       this.transportPassengers();
@@ -39,20 +52,26 @@ class Elevator {
     this.direction = "IDLE";
   }
 
+  /**
+   * Transports passengers traveling up before transporting passengers traveling down
+   */
   transportPassengers() {
     if (this.direction === "UP" || this.direction === "IDLE") {
-      this.transportPassengersGoingUp();
-      this.transportPassengersGoingDown();
+      this.handlePassengersGoingUp();
+      this.handlePassengersGoingDown();
     } else {
-      this.transportPassengersGoingDown();
-      this.transportPassengersGoingUp();
+      this.handlePassengersGoingDown();
+      this.handlePassengersGoingUp();
     }
   }
 
-  transportPassengersGoingUp() {
+  /**
+   * Allows passengers traveling up to disembark at destination
+   */
+  handlePassengersGoingUp() {
     while (this.passengersGoingUp.length) {
       let exitingPassenger = this.passengersGoingUp.shift();
-      this.currentFloor = exitingPassenger.desiredFloor;
+      this.currentFloor = exitingPassenger.destination;
       this.testCurrentFloors.push(this.currentFloor);
       console.log(`Arrived at Floor ${this.currentFloor}!`);
     }
@@ -64,10 +83,13 @@ class Elevator {
     }
   }
 
-  transportPassengersGoingDown() {
+  /**
+   * Allows passengers traveling down to disembark at destination
+   */
+  handlePassengersGoingDown() {
     while (this.passengersGoingDown.length) {
       let exitingPassenger = this.passengersGoingDown.shift();
-      this.currentFloor = exitingPassenger.desiredFloor;
+      this.currentFloor = exitingPassenger.destination;
       this.testCurrentFloors.push(this.currentFloor);
       console.log(`Arrived at Floor ${this.currentFloor}!`);
     }

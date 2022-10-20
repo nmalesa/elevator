@@ -1,7 +1,7 @@
 class Passenger {
-    constructor(currentFloor, desiredFloor, direction, location) {
+    constructor(currentFloor, destination, direction, location) {
         this.currentFloor = currentFloor;
-        this.desiredFloor = desiredFloor;
+        this.destination = destination;
         this.direction = direction;
         this.location = location;
     }
