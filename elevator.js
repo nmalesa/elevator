@@ -38,12 +38,23 @@ class Elevator {
 
   sendDownRequest(downRequest) {
     if (downRequest.location === "OUTSIDE_ELEVATOR") {
+      this.downRequests.push(
+        new Request(
+          this.currentFloor,
+          downRequest.currentFloor,
+          this.direction.down,
+          this.location.outside
+        )
+      );
+      console.log("Down requests: ", this.downRequests);
+    } else {
       this.downRequests.push(downRequest.currentFloor);
       console.log("Down requests: ", this.downRequests);
     }
+  }
 
-    this.downRequests.push(downRequest.currentFloor);
-    console.log("Down requests: ", this.downRequests);
+  run() {
+
   }
 }
 

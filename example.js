@@ -17,6 +17,9 @@ console.log("Current Floor: ", elevator.currentFloor);
 
 let requestFromSix = new Request(6, 10, direction.up, location.outside);
 
-elevator.sendUpRequest(requestFromSix);
+let requestFromThree = new Request(3, 2, direction.down, location.outside);
 
+// elevator.sendUpRequest(requestFromSix);
+
+elevator.sendDownRequest(requestFromThree);
 
