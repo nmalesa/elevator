@@ -3,10 +3,8 @@ const Request = require("./request");
 class Elevator {
   upRequests = [];
   downRequests = [];
-
-  direction = "IDLE";
-
   testCurrentFloors = [];
+  direction = "IDLE";
 
   constructor(currentFloor) {
     this.currentFloor = currentFloor;
@@ -33,20 +31,13 @@ class Elevator {
   }
 
   run() {
-    if (!this.upRequests.length || !this.downRequests.length) {
+    if (this.upRequests.length || this.downRequests.length) {
       this.processRequests();
     }
 
     console.log("Finished all requests.");
-    console.log("Current Floors Array: ", this.testCurrentFloors);
     this.direction = "IDLE";
   }
-
-  // getDirectionToFloor(floor) {
-  //   return floor > this.currentFloor
-  //     ? (this.direction = "UP")
-  //     : (this.direction = "DOWN");
-  // }
 
   processRequests() {
     if (this.direction === "UP" || this.direction === "IDLE") {
