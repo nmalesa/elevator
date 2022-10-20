@@ -36,14 +36,13 @@ class Elevator {
           "DOWN",
           "OUTSIDE_ELEVATOR"
         )
-      );
-      // console.log("Unsorted: ", this.downRequests);
-      this.downRequests.sort((a, b) => (b - a));
-      // console.log("Sorted: ", this.downRequests)
+      );   
+      // this.downRequests.sort((a, b) => (b.currentFloor - a.currentFloor)); 
     }
     this.downRequests.push(downRequest);
-    this.downRequests.sort((a, b) => (b - a));
-    // console.log("I should not be called.");
+    console.log("Unsorted: ", this.downRequests);
+    this.downRequests.sort((a, b) => (b.desiredFloor - a.desiredFloor));
+    console.log("Sorted: ", this.downRequests)
   }
 
   run() {
