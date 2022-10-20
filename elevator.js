@@ -10,24 +10,10 @@ class Elevator {
     this.getDirection(floor);
 
     // HANDLES SCENARIO WITH MULTIPLE FLOORS IN SAME DIRECTION
-    if (this.destinations.length) {
-      if (button === "up" && floor > this.destinations[0]) {
-        this.destinations.push(floor);
-      } else if (button === "down" && floor < this.destinations[0]) {
-        this.destinations.unshift(floor);
-      } else {
-        this.destinations.push(floor)
-      }
-    } else {
-      this.destinations.push(floor);
-    }
-    console.log("Queue: ", this.destinations);
-
-    // HANDLES GIVEN SCENARIO WITH UPS AND DOWNS
     // if (this.destinations.length) {
-    //   if (this.direction === "up" && floor > this.destinations[0]) {
-    //     this.destinations.unshift(floor);
-    //   } else if (this.direction === "down" && floor > this.destinations[0]) {
+    //   if (button === "up" && floor > this.destinations[0]) {
+    //     this.destinations.push(floor);
+    //   } else if (button === "down" && floor < this.destinations[0]) {
     //     this.destinations.unshift(floor);
     //   } else {
     //     this.destinations.push(floor)
@@ -36,6 +22,20 @@ class Elevator {
     //   this.destinations.push(floor);
     // }
     // console.log("Queue: ", this.destinations);
+
+    // HANDLES GIVEN SCENARIO WITH UPS AND DOWNS
+    if (this.destinations.length) {
+      if (this.direction === "up" && floor > this.destinations[0]) {
+        this.destinations.unshift(floor);
+      } else if (this.direction === "down" && floor > this.destinations[0]) {
+        this.destinations.unshift(floor);
+      } else {
+        this.destinations.push(floor)
+      }
+    } else {
+      this.destinations.push(floor);
+    }
+    console.log("Queue: ", this.destinations);
   }
 
   travel() {
