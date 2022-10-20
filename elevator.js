@@ -11,38 +11,33 @@ class Elevator {
   }
 
   sendUpRequest(upRequest) {
-    if (upRequest.location === "OUTSIDE_ELEVATOR") {
+    if (upRequest.location === "OUT") {
       this.upRequests.push(
         new Request(
           this.currentFloor,
           upRequest.currentFloor,
           "UP",
-          "OUTSIDE_ELEVATOR"
+          "OUT"
         )
       );
-      this.upRequests.sort((a, b) => (a - b))
     }
     this.upRequests.push(upRequest);
-    this.upRequests.sort((a, b) => (a - b))
-    console.log("Up requests: ", this.upRequests);
+    this.upRequests.sort((a, b) => (a.desiredFloor - b.desiredFloor))
   }
 
   sendDownRequest(downRequest) {
-    if (downRequest.location === "OUTSIDE_ELEVATOR") {
+    if (downRequest.location === "OUT") {
       this.downRequests.push(
         new Request(
           this.currentFloor,
           downRequest.currentFloor,
           "DOWN",
-          "OUTSIDE_ELEVATOR"
+          "OUT"
         )
-      );   
-      // this.downRequests.sort((a, b) => (b.currentFloor - a.currentFloor)); 
+      );
     }
     this.downRequests.push(downRequest);
-    console.log("Unsorted: ", this.downRequests);
     this.downRequests.sort((a, b) => (b.desiredFloor - a.desiredFloor));
-    console.log("Sorted: ", this.downRequests)
   }
 
   run() {
@@ -54,11 +49,11 @@ class Elevator {
     this.direction = "IDLE";
   }
 
-  getDirectionToFloor(floor) {
-    return floor > this.currentFloor
-      ? (this.direction = "UP")
-      : (this.direction = "DOWN");
-  }
+  // getDirectionToFloor(floor) {
+  //   return floor > this.currentFloor
+  //     ? (this.direction = "UP")
+  //     : (this.direction = "DOWN");
+  // }
 
   processRequests() {
     if (this.direction === "UP" || this.direction === "IDLE") {
