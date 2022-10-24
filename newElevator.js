@@ -44,6 +44,14 @@ class Elevator {
   }
 
   travel() {
+    if (this.upRequests.length) {
+        this.travelUp();
+    } else if (this.downRequests.length) {
+        this.travelDown();
+    }
+  }
+
+  travelUp() {
     if (
       this.upRequests.length &&
       (this.getDirection(this.upRequests[0]) === "UP" ||
@@ -72,34 +80,34 @@ class Elevator {
     }
   }
 
-  //   travel() {
-  //     if (
-  //       this.downRequests.length &&
-  //       this.getDirection(this.downRequests[0]) === "UP"
-  //     ) {
-  //       this.handlePassengersGoingDown();
-  //       this.time++;
+    travelDown() {
+      if (
+        this.downRequests.length &&
+        this.getDirection(this.downRequests[0]) === "UP"
+      ) {
+        this.handlePassengersGoingDown();
+        this.time++;
 
-  //       if (this.currentFloor === this.maxFloor) {
-  //         this.currentFloor--;
-  //       } else {
-  //         this.currentFloor++;
-  //       }
-  //     } else if (
-  //       (this.downRequests.length &&
-  //         this.getDirection(this.downRequests[0]) === "DOWN") ||
-  //       this.getDirection(this.downRequests[0]) === "STOPPED"
-  //     ) {
-  //       this.handlePassengersGoingDown();
-  //       this.time++;
+        if (this.currentFloor === this.maxFloor) {
+          this.currentFloor--;
+        } else {
+          this.currentFloor++;
+        }
+      } else if (
+        (this.downRequests.length &&
+          this.getDirection(this.downRequests[0]) === "DOWN") ||
+        this.getDirection(this.downRequests[0]) === "STOPPED"
+      ) {
+        this.handlePassengersGoingDown();
+        this.time++;
 
-  //       if (this.currentFloor === 1) {
-  //         this.currentFloor++;
-  //       } else {
-  //         this.currentFloor--;
-  //       }
-  //     }
-  //   }
+        if (this.currentFloor === 1) {
+          this.currentFloor = 1;
+        } else {
+          this.currentFloor--;
+        }
+      }
+    }
 
   //   travel() {
   //     this.getDirection(this.upRequests[0]);
