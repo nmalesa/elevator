@@ -45,23 +45,23 @@ class Elevator {
 
   travel() {
     if (
-      this.downRequests.length &&
-      this.getDirection(this.downRequests[0]) === "UP"
+      this.upRequests.length &&
+      (this.getDirection(this.upRequests[0]) === "UP" ||
+        this.getDirection(this.upRequests[0]) === "STOPPED")
     ) {
-      this.handlePassengersGoingDown();
+      this.handlePassengersGoingUp();
       this.time++;
 
       if (this.currentFloor === this.maxFloor) {
-        this.currentFloor--;
+        this.currentFloor = this.maxFloor;
       } else {
         this.currentFloor++;
       }
     } else if (
-      (this.downRequests.length &&
-        this.getDirection(this.downRequests[0]) === "DOWN") ||
-      this.getDirection(this.downRequests[0]) === "STOPPED"
+      this.upRequests.length &&
+      this.getDirection(this.upRequests[0]) === "DOWN"
     ) {
-      this.handlePassengersGoingDown();
+      this.handlePassengersGoingUp();
       this.time++;
 
       if (this.currentFloor === 1) {
@@ -71,6 +71,35 @@ class Elevator {
       }
     }
   }
+
+  //   travel() {
+  //     if (
+  //       this.downRequests.length &&
+  //       this.getDirection(this.downRequests[0]) === "UP"
+  //     ) {
+  //       this.handlePassengersGoingDown();
+  //       this.time++;
+
+  //       if (this.currentFloor === this.maxFloor) {
+  //         this.currentFloor--;
+  //       } else {
+  //         this.currentFloor++;
+  //       }
+  //     } else if (
+  //       (this.downRequests.length &&
+  //         this.getDirection(this.downRequests[0]) === "DOWN") ||
+  //       this.getDirection(this.downRequests[0]) === "STOPPED"
+  //     ) {
+  //       this.handlePassengersGoingDown();
+  //       this.time++;
+
+  //       if (this.currentFloor === 1) {
+  //         this.currentFloor++;
+  //       } else {
+  //         this.currentFloor--;
+  //       }
+  //     }
+  //   }
 
   //   travel() {
   //     this.getDirection(this.upRequests[0]);
@@ -189,9 +218,10 @@ class Elevator {
       let stop = this.upRequests.shift();
       this.stops.push(stop);
       console.log(`Arrived at Floor ${stop}!`);
-      console.log("Queue: ", this.upRequests);
+    //   console.log("Queue: ", this.upRequests);
     } else {
       console.log(`Currently at Floor ${this.currentFloor}.`);
+      console.log("Queue: ", this.upRequests);
     }
 
     if (!this.upRequests.length && this.downRequests.length) {

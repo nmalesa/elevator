@@ -77,31 +77,50 @@ let elevator = new Elevator(1, 10);
 //   )
 // })
 
-test("handles requests by time", () => {
-  elevator.getDownRequests(new Request(3, null, "DOWN", "OUT"));
-  elevator.travel();
-  elevator.getDownRequests(new Request(10, null, "DOWN", "OUT"));
-  elevator.travel();
-  elevator.travel();
-  elevator.travel();
-  elevator.travel();
-  elevator.travel();
-  elevator.travel();
-  elevator.travel();
-  elevator.travel();
-  elevator.travel();
-  elevator.getDownRequests(new Request(10, 1, "DOWN", "IN"));
-  elevator.travel();
-  elevator.travel();
-  elevator.travel();
-  elevator.travel();
-  elevator.travel();
-  elevator.travel();
-  elevator.travel();
-  elevator.getDownRequests(new Request(3, 2, "DOWN", "IN"));
-  elevator.travel();
-  elevator.travel();
-  elevator.travel();
-  expect(elevator.stops).toEqual([10, 3, 2, 1])
-  expect(elevator.currentFloor).toBe(1)
-});
+// test("handles down requests by time", () => {
+//     elevator.getDownRequests(new Request(3, null, "DOWN", "OUT"))
+//     elevator.travel();
+//     elevator.getDownRequests(new Request(10, null, "DOWN", "OUT"));
+//     elevator.travel();
+//     elevator.travel();
+//     elevator.travel();
+//     elevator.travel();
+//     elevator.travel();
+//     elevator.travel();
+//     elevator.travel();
+//     elevator.travel();
+//     elevator.travel();
+//     elevator.getDownRequests(new Request(10, 1, "DOWN", "IN"));
+//     elevator.travel();
+//     elevator.travel();
+//     elevator.travel();
+//     elevator.travel();
+//     elevator.travel();
+//     elevator.travel();
+//     elevator.travel();
+//     elevator.getDownRequests(new Request(3, 2, "DOWN", "IN"));
+//     elevator.travel();
+//     elevator.travel();
+//     elevator.travel();
+//     expect(elevator.stops).toEqual([10, 3, 2, 1]);
+//     expect(elevator.currentFloor).toBe(1);
+// });
+
+test('handles up requests by time', () => {
+    elevator.getUpRequests(new Request(8, null, "UP", "OUT"));
+    elevator.travel();
+    elevator.getUpRequests(new Request(3, null, "UP", "OUT"));
+    elevator.travel();
+    elevator.travel();
+    elevator.getUpRequests(new Request(3, 5, "UP", "IN"))
+    elevator.travel();
+    elevator.travel();
+    elevator.travel();
+    elevator.travel();
+    elevator.travel();
+    elevator.getUpRequests(new Request(8, 10, "UP", "IN"))
+    elevator.travel();
+    elevator.travel();
+    expect(elevator.stops).toEqual([3, 5, 8, 10]);
+    expect(elevator.currentFloor).toBe(10);
+})
