@@ -1,7 +1,8 @@
-const Elevator = require("./elevator");
-const Passenger = require("./passenger");
+const { hasUncaughtExceptionCaptureCallback } = require("process");
+const Elevator = require("./newElevator");
+const Request = require("./request");
 
-let elevator = new Elevator(1);
+let elevator = new Elevator(1, 10);
 
 // beforeEach(() => {
 //   elevator.testCurrentFloors = [];
@@ -66,44 +67,41 @@ let elevator = new Elevator(1);
 
 // test('two floors', () => {
 //   // Array of elevators
-//   // Same direction as passenger 
-//   // Distance from passenger 
+//   // Same direction as passenger
+//   // Distance from passenger
 
 //   getClosestElevator() {
-    
-//   }
 
+//   }
 
 //   )
 // })
 
-// test('handles requests by time', () => {
-//     elevator.currentFloor = 1;
-//     elevator.getPassengersGoingUp(new Passenger(8, 10, "UP", "OUT"));
-//     elevator.travelOneFloor();
-//     elevator.getPassengersGoingUp(new Passenger(3, 5, "UP", "OUT"))
-//     elevator.travelOneFloor();
-//     elevator.travelOneFloor();
-//     elevator.travelOneFloor();
-//     elevator.travelOneFloor();
-//     elevator.travelOneFloor();
-//     elevator.travelOneFloor();
-//     elevator.travelOneFloor();
-//     elevator.travelOneFloor();
-//     expect(elevator.testCurrentFloors).toEqual([3, 5, 8, 10]);
-//     expect(elevator.currentFloor).toBe(10);
-// })
-
-
-    elevator.currentFloor = 1;
-    elevator.getPassengersGoingUp(new Passenger(8, 10, "UP", "OUT"));
-    elevator.travelOneFloor();
-    elevator.getPassengersGoingUp(new Passenger(3, 5, "UP", "OUT"))
-    elevator.travelOneFloor();
-    elevator.travelOneFloor();
-    elevator.travelOneFloor();
-    elevator.travelOneFloor();
-    elevator.travelOneFloor();
-    elevator.travelOneFloor();
-    elevator.travelOneFloor();
-    elevator.travelOneFloor();
+test("handles requests by time", () => {
+  elevator.getDownRequests(new Request(3, null, "DOWN", "OUT"));
+  elevator.travel();
+  elevator.getDownRequests(new Request(10, null, "DOWN", "OUT"));
+  elevator.travel();
+  elevator.travel();
+  elevator.travel();
+  elevator.travel();
+  elevator.travel();
+  elevator.travel();
+  elevator.travel();
+  elevator.travel();
+  elevator.travel();
+  elevator.getDownRequests(new Request(10, 1, "DOWN", "IN"));
+  elevator.travel();
+  elevator.travel();
+  elevator.travel();
+  elevator.travel();
+  elevator.travel();
+  elevator.travel();
+  elevator.travel();
+  elevator.getDownRequests(new Request(3, 2, "DOWN", "IN"));
+  elevator.travel();
+  elevator.travel();
+  elevator.travel();
+  expect(elevator.stops).toEqual([10, 3, 2, 1])
+  expect(elevator.currentFloor).toBe(1)
+});

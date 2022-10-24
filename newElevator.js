@@ -1,8 +1,8 @@
 const Request = require("./request");
 
 class Elevator {
-  requestsGoingUp = [];
-  requestsGoingDown = [];
+  upRequests = [];
+  downRequests = [];
   stops = [];
   direction = "IDLE";
   time = 0;
@@ -13,68 +13,129 @@ class Elevator {
     this.maxFloor = maxFloor;
   }
 
-  getRequestsGoingUp(request) {
+  getUpRequests(request) {
     if (request.location === "OUT") {
-      this.requestsGoingUp.push(request.currentFloor);
+      this.upRequests.push(request.currentFloor);
     } else if (request.location === "IN") {
-      this.requestsGoingUp.push(request.destination);
-      this.passengers++;
+      this.upRequests.push(request.destination);
+      //   this.passengers++;
     }
 
-    this.requestsGoingUp.sort((a, b) => a - b);
+    this.upRequests.sort((a, b) => a - b);
+    // console.log("Queue from getRequeusts: ", this.upRequests)
   }
 
-  getDirection(nextStop) {
-    console.log("Next stop: ", nextStop)
-    console.log("Current floor: ", this.currentFloor)
-    return nextStop > this.currentFloor
-      ? (this.direction = "UP")
-      : (this.direction = "DOWN");
+  //   getDirection(nextStop) {
+  //     console.log("Next stop: ", nextStop)
+  //     console.log("Current floor: ", this.currentFloor)
+  //     return nextStop > this.currentFloor
+  //       ? (this.direction = "UP")
+  //       : (this.direction = "DOWN");
+  //   }
+
+  getDirection(stop) {
+    if (stop > this.currentFloor) {
+      return "UP";
+    } else if (stop < this.currentFloor) {
+      return "DOWN";
+    } else {
+      return "STOPPED";
+    }
   }
 
   travel() {
     if (
-      this.getRequestsGoingUp.length &&
-      this.getDirection(this.getRequestsGoingUp[0]) === "UP"
-    ) {
-      this.handlePassengersGoingUp();
-      this.time++;
-      this.currentFloor++;
-      console.log("Up and up")
-      console.log("Direction: ", this.getDirection(this.getRequestsGoingUp[0]))
-      
-    } else if (
-      this.getRequestsGoingUp.length &&
-      this.getDirection(this.getRequestsGoingUp[0]) === "DOWN"
-    ) {
-      this.handlePassengersGoingUp();
-      this.time++;
-      this.currentFloor--;
-      console.log("Up and down")
-      console.log("Direction: ", this.getDirection(this.getRequestsGoingUp[0]))
-      console.log("First index: ", this.getRequestsGoingUp[0])
-    } else if (
-      this.getRequestsGoingDown.length &&
-      this.getDirection(this.getRequestsGoingDown[0]) === "DOWN"
+      this.downRequests.length &&
+      this.getDirection(this.downRequests[0]) === "UP"
     ) {
       this.handlePassengersGoingDown();
       this.time++;
-      this.currentFloor--;
-      console.log("Down and down")
+
+      if (this.currentFloor === this.maxFloor) {
+        this.currentFloor--;
+      } else {
+        this.currentFloor++;
+      }
     } else if (
-      this.getRequestsGoingDown.length &&
-      this.getDirection(this.getRequestsGoingDown[0]) === "UP"
+      (this.downRequests.length &&
+        this.getDirection(this.downRequests[0]) === "DOWN") ||
+      this.getDirection(this.downRequests[0]) === "STOPPED"
     ) {
       this.handlePassengersGoingDown();
       this.time++;
-      this.currentFloor++;
-      console.log("Down and up")
-    } else {
-      console.log("Transported all passengers!");
-      this.direction = "IDLE";
-      this.time = 0;
+
+      if (this.currentFloor === 1) {
+        this.currentFloor++;
+      } else {
+        this.currentFloor--;
+      }
     }
   }
+
+  //   travel() {
+  //     this.getDirection(this.upRequests[0]);
+
+  // if (this.currentFloor === this.maxFloor) {
+  //   this.direction === "DOWN";
+  // }
+
+  // if (
+  //   (this.upRequests.length && this.direction === "UP") ||
+  //   this.direction === "IDLE"
+  // ) {
+  //   this.handlePassengersGoingUp();
+  //   this.currentFloor++;
+  //   this.time++;
+  // } else {
+  //   console.log("Reached max floor.  Going down.");
+  //   this.direction === "DOWN";
+  //   console.log("Direction: ", this.direction);
+  // }
+  //   }
+
+  //   travel() {
+  //     if (
+  //       this.getRequestsGoingUp.length &&
+  //       this.getDirection(this.getRequestsGoingUp[0]) === "UP"
+  //     ) {
+  //       this.handlePassengersGoingUp();
+  //       this.time++;
+  //       this.currentFloor++;
+  //       console.log("Up and up")
+  //       console.log("Direction: ", this.getDirection(this.getRequestsGoingUp[0]))
+
+  //     } else if (
+  //       this.getRequestsGoingUp.length &&
+  //       this.getDirection(this.getRequestsGoingUp[0]) === "DOWN"
+  //     ) {
+  //       this.handlePassengersGoingUp();
+  //       this.time++;
+  //       this.currentFloor--;
+  //       console.log("Up and down")
+  //       console.log("Direction: ", this.getDirection(this.getRequestsGoingUp[0]))
+  //       console.log("First index: ", this.getRequestsGoingUp[0])
+  //     } else if (
+  //       this.getRequestsGoingDown.length &&
+  //       this.getDirection(this.getRequestsGoingDown[0]) === "DOWN"
+  //     ) {
+  //       this.handlePassengersGoingDown();
+  //       this.time++;
+  //       this.currentFloor--;
+  //       console.log("Down and down")
+  //     } else if (
+  //       this.getRequestsGoingDown.length &&
+  //       this.getDirection(this.getRequestsGoingDown[0]) === "UP"
+  //     ) {
+  //       this.handlePassengersGoingDown();
+  //       this.time++;
+  //       this.currentFloor++;
+  //       console.log("Down and up")
+  //     } else {
+  //       console.log("Transported all passengers!");
+  //       this.direction = "IDLE";
+  //       this.time = 0;
+  //     }
+  //   }
 
   travelOneFloorUp() {
     if (this.requestsGoingUp.length) {
@@ -88,15 +149,15 @@ class Elevator {
     }
   }
 
-  getRequestsGoingDown(request) {
-    if (request.location === "OUT") {
-      this.requestsGoingDown.push(request.currentFloor);
-    } else if (request.location === "IN") {
-      this.requestsGoingDown.push(request.destination);
-      this.passengers++;
+  getDownRequests(downRequest) {
+    if (downRequest.location === "OUT") {
+      this.downRequests.push(downRequest.currentFloor);
+    } else if (downRequest.location === "IN") {
+      this.downRequests.push(downRequest.destination);
+      //   this.passengers++;
     }
 
-    this.requestsGoingUp.sort((a, b) => b - a);
+    this.downRequests.sort((a, b) => b - a);
   }
 
   travelOneFloorUp() {
@@ -124,40 +185,36 @@ class Elevator {
   }
 
   handlePassengersGoingUp() {
-    if (this.currentFloor === this.requestsGoingUp[0]) {
-      let stop = this.requestsGoingUp.shift();
+    if (this.currentFloor === this.upRequests[0]) {
+      let stop = this.upRequests.shift();
       this.stops.push(stop);
       console.log(`Arrived at Floor ${stop}!`);
-      console.log("Queue: ", this.requestsGoingUp);
+      console.log("Queue: ", this.upRequests);
     } else {
-      console.log(`Currently at Floor ${this.currentFloor}.  Going up!`);
+      console.log(`Currently at Floor ${this.currentFloor}.`);
     }
 
-    // if (this.passengersGoingDown.length) {
-    //     this.direction = "DOWN";
-    //   } else {
-    //     this.direciton = "IDLE";
-    //   }
+    if (!this.upRequests.length && this.downRequests.length) {
+      this.direction = "DOWN";
+    }
   }
 
   /**
    * Allows passengers traveling down to disembark at destination
    */
   handlePassengersGoingDown() {
-    if (this.currentFloor === this.requestsGoingDown[0]) {
-      let stop = this.requestsGoingDown.shift();
+    if (this.currentFloor === this.downRequests[0]) {
+      let stop = this.downRequests.shift();
       this.stops.push(stop);
       console.log(`Arrived at Floor ${stop}!`);
-      console.log("Queue: ", this.requestsGoingDown);
+      //   console.log("Queue: ", this.downRequests);
     } else {
-      console.log(`Currently at Floor ${this.currentFloor}.  Going down!`);
+      console.log(`Currently at Floor ${this.currentFloor}.`);
     }
 
-    // if (this.passengersGoingUp.length) {
-    //   this.direction = "UP";
-    // } else {
-    //   this.direction = "IDLE";
-    // }
+    if (!this.downRequests.length && this.upRequests.length) {
+      this.direction = "UP";
+    }
   }
 }
 
