@@ -1,8 +1,7 @@
 class Request {
-    constructor(currentFloor, destination, direction, location) {
+    constructor(currentFloor, destination, location) {
       this.currentFloor = currentFloor;
       this.destination = destination;
-      this.direction = direction;
       this.location = location;
     }
   }

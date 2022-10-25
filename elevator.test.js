@@ -1,4 +1,3 @@
-const { hasUncaughtExceptionCaptureCallback } = require("process");
 const Elevator = require("./newElevator");
 const Request = require("./request");
 
@@ -78,11 +77,9 @@ beforeEach(() => {
 // })
 
 test("handles down requests by time", () => {
-    elevator.getDownRequests(new Request(3, null, "DOWN", "OUT"))
+    elevator.getDownRequests(new Request(3, null, "OUT"))
     elevator.travel();
-    elevator.getDownRequests(new Request(10, null, "DOWN", "OUT"));
-    elevator.travel();
-    elevator.travel();
+    elevator.getDownRequests(new Request(10, null, "OUT"));
     elevator.travel();
     elevator.travel();
     elevator.travel();
@@ -90,7 +87,9 @@ test("handles down requests by time", () => {
     elevator.travel();
     elevator.travel();
     elevator.travel();
-    elevator.getDownRequests(new Request(10, 1, "DOWN", "IN"));
+    elevator.travel();
+    elevator.travel();
+    elevator.getDownRequests(new Request(10, 1, "IN"));
     elevator.travel();
     elevator.travel();
     elevator.travel();
@@ -98,7 +97,7 @@ test("handles down requests by time", () => {
     elevator.travel();
     elevator.travel();
     elevator.travel();
-    elevator.getDownRequests(new Request(3, 2, "DOWN", "IN"));
+    elevator.getDownRequests(new Request(3, 2, "IN"));
     elevator.travel();
     elevator.travel();
     elevator.travel();
@@ -107,20 +106,41 @@ test("handles down requests by time", () => {
 });
 
 test('handles up requests by time', () => {
-    elevator.getUpRequests(new Request(8, null, "UP", "OUT"));
+    elevator.getUpRequests(new Request(8, null, "OUT"));
     elevator.travel();
-    elevator.getUpRequests(new Request(3, null, "UP", "OUT"));
-    elevator.travel();
-    elevator.travel();
-    elevator.getUpRequests(new Request(3, 5, "UP", "IN"))
+    elevator.getUpRequests(new Request(3, null, "OUT"));
     elevator.travel();
     elevator.travel();
+    elevator.getUpRequests(new Request(3, 5, "IN"))
     elevator.travel();
     elevator.travel();
     elevator.travel();
-    elevator.getUpRequests(new Request(8, 10, "UP", "IN"))
+    elevator.travel();
+    elevator.travel();
+    elevator.getUpRequests(new Request(8, 10, "IN"))
     elevator.travel();
     elevator.travel();
     expect(elevator.stops).toEqual([3, 5, 8, 10]);
     expect(elevator.currentFloor).toBe(10);
+})
+
+test('handles both up and down requests by time', () => {
+    elevator.getDownRequests(new Request(7, null, "OUT"))
+    elevator.travel();
+    elevator.getUpRequests(new Request(3, null, "OUT"))
+    elevator.travel();
+    elevator.travel();
+    elevator.getUpRequests(new Request(3, 6, "IN"));
+    elevator.travel();
+    elevator.travel();
+    elevator.travel();
+    elevator.travel();
+    elevator.getDownRequests(new Request(7, 2, "IN"))
+    elevator.travel();
+    elevator.travel();
+    elevator.travel();
+    elevator.travel();
+    elevator.travel();
+    expect(elevator.stops).toEqual([3, 6, 7, 2]);
+    expect(elevator.currentFloor).toBe(2);
 })
