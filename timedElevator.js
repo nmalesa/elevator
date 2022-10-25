@@ -8,16 +8,10 @@ class Elevator {
     this.maxFloor = maxFloor;
   }
 
-  getUpRequests(request) {
-    if (request.location === "OUT") {
-      this.upRequests.push(request.currentFloor);
-    } else if (request.location === "IN") {
-      this.upRequests.push(request.destination);
-    }
 
-    this.upRequests.sort((a, b) => a - b);
-  }
-
+   /**
+   * Determines direction elevator should travel based on relationship of current floor to destination
+   */
   getDirection(stop) {
     if (stop > this.currentFloor) {
       return "UP";
@@ -28,6 +22,40 @@ class Elevator {
     }
   }
 
+
+  /**
+   * Receives requests from passengers traveling up and sorts them in ascending order by destination
+   *
+   * @param {Request} request - The request from a passenger traveling up
+   */
+  getUpRequests(request) {
+    if (request.location === "OUT") {
+      this.upRequests.push(request.currentFloor);
+    } else if (request.location === "IN") {
+      this.upRequests.push(request.destination);
+    }
+
+    this.upRequests.sort((a, b) => a - b);
+  }
+
+  /**
+   * Receives requests from passengers traveling down and sorts them in descending order by destination
+   *
+   * @param {Request} request - The request from a passenger traveling down
+   */
+   getDownRequests(downRequest) {
+    if (downRequest.location === "OUT") {
+      this.downRequests.push(downRequest.currentFloor);
+    } else if (downRequest.location === "IN") {
+      this.downRequests.push(downRequest.destination);
+    }
+
+    this.downRequests.sort((a, b) => b - a);
+  }
+
+  /**
+   * Travels to all given destinations in both queues
+   */
   travel() {
     if (this.upRequests.length) {
       this.travelUp();
@@ -36,6 +64,9 @@ class Elevator {
     }
   }
 
+   /**
+   * Travels to all given destinations in upRequeusts queue by one floor at a time
+   */
   travelUp() {
     if (
       this.getDirection(this.upRequests[0]) === "UP" ||
@@ -59,6 +90,9 @@ class Elevator {
     }
   }
 
+  /**
+   * Travels to all given destinations in downRequeusts queue by one floor at a time
+   */
   travelDown() {
     if (this.getDirection(this.downRequests[0]) === "UP") {
       this.handlePassengersGoingDown();
@@ -83,16 +117,9 @@ class Elevator {
     }
   }
 
-  getDownRequests(downRequest) {
-    if (downRequest.location === "OUT") {
-      this.downRequests.push(downRequest.currentFloor);
-    } else if (downRequest.location === "IN") {
-      this.downRequests.push(downRequest.destination);
-    }
-
-    this.downRequests.sort((a, b) => b - a);
-  }
-
+  /**
+   * Allows passengers traveling up to disembark at destination
+   */
   handlePassengersGoingUp() {
     if (this.currentFloor === this.upRequests[0]) {
       let stop = this.upRequests.shift();
