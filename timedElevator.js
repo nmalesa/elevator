@@ -1,12 +1,7 @@
-const Request = require("./request");
-
 class Elevator {
   upRequests = [];
   downRequests = [];
   stops = [];
-  direction = "IDLE";
-  time = 0;
-  passengers = 0;
 
   constructor(currentFloor, maxFloor) {
     this.currentFloor = currentFloor;
@@ -18,11 +13,9 @@ class Elevator {
       this.upRequests.push(request.currentFloor);
     } else if (request.location === "IN") {
       this.upRequests.push(request.destination);
-      //   this.passengers++;
     }
 
     this.upRequests.sort((a, b) => a - b);
-    // console.log("Queue from getRequeusts: ", this.upRequests)
   }
 
   getDirection(stop) {
@@ -49,7 +42,6 @@ class Elevator {
       this.getDirection(this.upRequests[0]) === "STOPPED"
     ) {
       this.handlePassengersGoingUp();
-      this.time++;
 
       if (this.currentFloor === this.maxFloor) {
         this.currentFloor = this.maxFloor;
@@ -58,15 +50,6 @@ class Elevator {
       }
     } else if (this.getDirection(this.upRequests[0]) === "DOWN") {
       this.handlePassengersGoingUp();
-      this.time++;
-
-      if (!this.upRequests.length) {
-        this.currentFloor = this.currentFloor;
-      } else if (this.currentFloor === 1) {
-        this.currentFloor++
-      } else {
-        this.currentFloor--;
-      }
 
       if (this.currentFloor === 1) {
         this.currentFloor++;
@@ -79,8 +62,8 @@ class Elevator {
   travelDown() {
     if (this.getDirection(this.downRequests[0]) === "UP") {
       this.handlePassengersGoingDown();
-      this.time++;
 
+      console.log("I am hit.")
       if (this.currentFloor === this.maxFloor) {
         this.currentFloor--;
       } else {
@@ -91,7 +74,6 @@ class Elevator {
       this.getDirection(this.downRequests[0]) === "STOPPED"
     ) {
       this.handlePassengersGoingDown();
-      this.time++;
 
       if (this.currentFloor === 1) {
         this.currentFloor = 1;
