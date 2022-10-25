@@ -63,7 +63,7 @@ class Elevator {
   }
 
   /**
-   * Travels to all given destinations in upRequeusts queue by one floor at a time
+   * Travels to all given destinations in upRequests queue by one floor at a time
    */
   travelUp() {
     if (
@@ -89,7 +89,7 @@ class Elevator {
   }
 
   /**
-   * Travels to all given destinations in downRequeusts queue by one floor at a time
+   * Travels to all given destinations in downRequests queue by one floor at a time
    */
   travelDown() {
     if (this.getDirection(this.downRequests[0]) === "UP") {
