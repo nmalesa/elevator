@@ -8,8 +8,7 @@ class Elevator {
     this.maxFloor = maxFloor;
   }
 
-
-   /**
+  /**
    * Determines direction elevator should travel based on relationship of current floor to destination
    */
   getDirection(stop) {
@@ -21,7 +20,6 @@ class Elevator {
       return "STOPPED";
     }
   }
-
 
   /**
    * Receives requests from passengers traveling up and sorts them in ascending order by destination
@@ -43,7 +41,7 @@ class Elevator {
    *
    * @param {Request} request - The request from a passenger traveling down
    */
-   getDownRequests(downRequest) {
+  getDownRequests(downRequest) {
     if (downRequest.location === "OUT") {
       this.downRequests.push(downRequest.currentFloor);
     } else if (downRequest.location === "IN") {
@@ -64,7 +62,7 @@ class Elevator {
     }
   }
 
-   /**
+  /**
    * Travels to all given destinations in upRequeusts queue by one floor at a time
    */
   travelUp() {
@@ -97,7 +95,7 @@ class Elevator {
     if (this.getDirection(this.downRequests[0]) === "UP") {
       this.handlePassengersGoingDown();
 
-      console.log("I am hit.")
+      console.log("I am hit.");
       if (this.currentFloor === this.maxFloor) {
         this.currentFloor--;
       } else {
